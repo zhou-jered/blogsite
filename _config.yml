@@ -3,15 +3,15 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Jered's Blog, Welcome 
-subtitle: Stay Angry, Stay Foolish
-description: 日常学习笔记，闲扯
-author: Jered
-language: 
-timezone: 
+title: YoScript say Welcome
+subtitle: For Honor & Love
+description: 学习笔记&脑洞
+author: YoScript
+language: Zh
+timezone: GMT+8
 
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
+url: http://yoscript.me
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
