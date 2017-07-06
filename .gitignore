@@ -6,3 +6,4 @@ db.json
 *.log
 node_modules/
 .deploy*/
+cp.sh
