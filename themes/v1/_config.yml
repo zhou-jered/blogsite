@@ -1,0 +1,50 @@
+
+
+# site icon
+favicon: /favicon.png
+
+# author headimg
+headimg: http://tva3.sinaimg.cn/crop.0.0.750.750.50/8cd4eddbjw8f7pz49ghgtj20ku0kumxz.jpg 
+
+# search
+search: 
+    enable: false
+    placeholder: Enter Key...
+
+# sidebar
+sidebar: 
+  enable: false
+  menus:
+    -
+      name: Weibo
+      link: http://weibo.com/yumemor/
+      target: _blank
+
+# comments
+comments:
+  duoshuo_username:  yumemor
+  #disqus_username: yumemor
+
+# accounts support weibo/github/zhihu/twitter/douban 
+# display to former three
+social: 
+  -
+    name: weibo
+    link: http://weibo.com/u/2362764763
+  -
+    name: github
+    link: https://github.com/zhou-jered
+#  -
+#    name: zhihu
+#    link: https://www.zhihu.com/people/yumemor
+#  -
+#    name: twitter
+#    link: 
+#  -
+#    name: douban
+#    link: 
+
+
+
+
+
