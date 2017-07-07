@@ -2,9 +2,8 @@ nav:
   Home: /
   About: /about/
   Writing: /archives/
-  Projects: http://github.com/probberechts
 
-projects_url: http://github.com/probberechts
+projects_url: https://github.com/zhou-jered
 
 customize:
     gravatar:
@@ -27,10 +26,8 @@ customize:
         url: /images/apple-touch-icon.png
         gravator: false
     social_links:
-        github: http://github.com/probberechts/cactus-dark
-        twitter: /
-        facebook: /
-        linkedin: /
+        github: https://github.com/zhou-jered
+        sina: http://weibo.com/u/2362764763
     show_all_posts: false
     post_count: 5
     highlight: rainbow
@@ -41,7 +38,7 @@ rss: false
 # Plugins
 plugins:
     disqus_shortname: # Disqus Comments Shortname
-    google_analytics: UA-86660611-1 # enter the tracking ID for your Google Analytics
+    google_analytics: UA-102207930-1 # enter the tracking ID for your Google Analytics
 
 # Miscellaneous
 miscellaneous:
