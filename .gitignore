@@ -1,7 +1,6 @@
 .DS_Store
 Thumbs.db
 nohup.out
-public
 db.json
 *.log
 node_modules/
