@@ -27,7 +27,7 @@ customize:
         gravator: false
     social_links:
         github: https://github.com/zhou-jered
-        sina: http://weibo.com/u/2362764763
+        weibo: http://weibo.com/u/2362764763
     show_all_posts: false
     post_count: 20
     highlight: rainbow

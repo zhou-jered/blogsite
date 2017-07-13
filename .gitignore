@@ -2,6 +2,7 @@
 Thumbs.db
 nohup.out
 db.json
+public
 *.log
 node_modules/
 .deploy*/
