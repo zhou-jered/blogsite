@@ -37,6 +37,7 @@ opencv是有很多的图片匹配算法的，现在需要一个衡量两张图�
 [SSIM Document](http://docs.opencv.org/3.2.0/dd/d3d/tutorial_gpu_basics_similarity.html)
 
 这里使用了官网示例的一个方法 `getMSSIM()` ， 这个方法能返回一个0到1 之间的数字来代表两张图片的结构相似度，因为之前没有使用过，所以首先测试下不同数字之间的相似度。
+参考下方代码链接里面的ssimtest.cpp
 结果如下：
 ![](/img/ascimg/ssim0.png)![](/img/ascimg/ssim1.png)![](/img/ascimg/ssim2.png)![](/img/ascimg/ssim3.png)![](/img/ascimg/ssim4.png)
 ![](/img/ascimg/ssim5.png)![](/img/ascimg/ssim6.png)![](/img/ascimg/ssim7.png)![](/img/ascimg/ssim8.png)![](/img/ascimg/ssim9.png)
