@@ -7,6 +7,8 @@ tags:
 	- Spring
 ---
 
+此文是阅读spring文档[Spring-Websocker](https://docs.spring.io/spring/docs/current/spring-framework-reference/html/websocket.html)的笔记。
+
 [RFC 6455](https://tools.ietf.org/html/rfc6455) 定义了一种让web应用可以在服务器和客户端之间全双工通信的协议Websocket.
 websocket的建立需要http协议的帮助，websocket的握手建立连接阶段是使用http协议来完成的。粗略的来讲，在需要建立websocket连接的时候，客户端在第一个http请求的时候会将http请求头
 ``` 
@@ -76,4 +78,49 @@ public class WebSocketConfig implements WebSocketConfiguere {
 }
 ```
 
+## 配置allow Origin
+```Java
+	@Override
+	public void registerWebSocketHandlers(WebSockerHandlerRegistry registry) {
+		registry.addHandler(myHandler(), "/myHandler").setAllowOrigins("http://mydomain.com");
+	}
+```
+
+## Overview of SockJS
+SockJS 提供了即使在浏览器不支持ws的情况下也能够不改变代码就能够使用ws api的支持。
+SockJS 包含一下几个部分
+> - SockJS Protocol
+> - SockJS JavaScript client - 一个在浏览器使用的lib
+> - SockJS 的服务器端的实现
+> - spring framework 4.1 `spring-websocket` 同时提供了SockJS的Java client
+
+sjs(SockJS) 为了支持大部分的浏览器工作，使用了不同的技术，WebSocket，HTTP Streanm 和 HTTP Long Polling，
+在开始的时候，sjs会发送一个`GET /info`请求到服务器来决定使用什么技术，在大部分情况下，如果浏览器不支持websocket的话，就是使用HTTP Streaming，如果你的浏览器连HTTP Streaming都不支持的话，就只能使用Long Polling了，下面是一个真实的`GET /info `请求的服务器返回
+```json
+https://spring.io/blog/2012/05/08/spring-mvc-3-2-preview-techniques-for-real-time-updates/
+```
+此时服务器是支持websocket的。
+
+*所有的传输请求使用下面的URL格式*
+```scheme
+http://host:port/myApp/myEndpoint/{server-id}/{session-id}/{transport}
+- {server-id} 在集群下用来路由请求，否则就没用
+- {session-id} 与sjs的http请求相关联
+- {transport} 指定传输类型，比如 “websocket” 和 “xhr-streaming”等等
+```
+
+sjs添加了最小的数据帧（纯翻译），比如服务器发送字符o（‘open’ 数据帧）来初始化，消息通过 `a["message1","message2"]` (json), 字符 h表示心跳帧， 如果在25秒内没有消息的话，字母c（close 帧）会发送来关闭session。
+
+## 使用SockJS
+可以通过java配置来使用SockJS
+```Java
+@Configuration
+@EnableWebSocket
+public class WebSocketConfig implements WebSocketConfigurer {
+		@Overried
+		public void registerWebSocketHandlers (WebSocketHandlerRegistry registry) {
+			registry.addHandler(myHandler(), "/myHandler").withSockJS();
+		}
+}
+```
 
