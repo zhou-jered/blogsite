@@ -1,7 +1,8 @@
 nav:
-  Home: /
-  Article: /archives/
-  About: /about/
+  主页: /
+  文章: /archives/
+  友链: friendlink.html
+  关于我:  about.html
 
 projects_url: https://github.com/zhou-jered
 
