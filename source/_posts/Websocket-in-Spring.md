@@ -455,7 +455,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
 }
 ```
-##运行时监控
+## 运行时监控
 当使用了`@EnableWebSocketMessageBroker`的时候，就自动开启了内部broker信息收集器，完成这个内部broker信息收集的任务是一个叫做`WebSocketMessageBroker`的spring bean来完成的，默认会以30分钟的间隔在`INFO`级别日志中输出相关的信息，这个bean也可以通过Spring的`MBeanExporter`导出到JMX，这样就可以在运行时监控到相关信息。以下是相关的信息汇总
 
 - Client WebSocket Sessions
@@ -480,5 +480,5 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 	用来发送心跳的线程数，注意如果心跳频率是在stomp层面协商出来的话，sockjs的心跳就会被禁用
 
 
-##测试注解控制器方法
+## 测试注解控制器方法
 官方写了一堆废话，总结来说，就是自己看例子，[测试例子](https://github.com/rstoyanchev/spring-websocket-portfolio/tree/master/src/test/java/org/springframework/samples/portfolio/web)
