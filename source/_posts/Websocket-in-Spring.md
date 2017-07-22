@@ -421,5 +421,64 @@ public class MyController {
 ```
 
 ## 配置和性能
-todo
+关于性能，没有一个统一的解决办法，因为影响因素有很多，消息大小，应用执行动作阻塞与否，外部网速等等都有影响。
+在一个消息系统中，消息通过channel传输，然后经过线程池异步处理，	`clientInboundChannel`和`clientOutboundChannel` 配置了后台的处理线程，默认数量是处理器的两倍，如果应用是io密集型，或者有阻塞操作的话，就需要提高这个配置的数量。
+`clientOutboundChannel`配置的是输出客户端数据的线程数，如果网速比较快的话，线程数就应该和处理数量差不多，如果网速比较慢，或者处理消息需要比较长的时候，这时候就需要提高这个线程数量。
+关于`clientInboundChannel`，有两个相关的配置项，`sendTimeLimit`和`sendBufferSize`定义了发送数据的时间限制和发送消息的buffer。
+由于任意时刻一个客户端只会有一个线程给它发送消息，同时其他消息只能被缓存。
+```Java
+@Configuration
+@EnableWebSocketMessageBroker
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+    @Override
+    public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
+        registration.setSendTimeLimit(15 * 1000).setSendBufferSizeLimit(512 * 1024);
+    }
+
+    // ...
+
+}
+```
+websocket可以配置传输的最大消息大小，理论上这个大小应该是无限制的，但是实际上服务器都限制了这个大小，tomcat是8k，jettty是64k。由于这个原因，stomp.js会把大消息分片成16k的消息传输，这就要求服务器能够有缓存和组装消息的能力。
+```Java
+@Configuration
+@EnableWebSocketMessageBroker
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+
+    @Override
+    public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
+        registration.setMessageSizeLimit(128 * 1024);
+    }
+
+    // ...
+
+}
+```
+##运行时监控
+当使用了`@EnableWebSocketMessageBroker`的时候，就自动开启了内部broker信息收集器，完成这个内部broker信息收集的任务是一个叫做`WebSocketMessageBroker`的spring bean来完成的，默认会以30分钟的间隔在`INFO`级别日志中输出相关的信息，这个bean也可以通过Spring的`MBeanExporter`导出到JMX，这样就可以在运行时监控到相关信息。以下是相关的信息汇总
+
+- Client WebSocket Sessions
+	- Current 当前的session数量，进一步分为websocket和http streaming 和 long polling
+	- Total 总的session数量
+	- Abnormally Closed 
+		- Connect Failures 部分session会在建立连接后60秒都没有接收到消息，这通常是代理（客户端）或者网络的问题
+		- Send Limit Exceeded 客户端发送消息超时或者消息过大
+		- Transport Errors 传输错误
+	- STOMP Frames 数据帧为CONNECT，CONNECTE，DISCONNECT的数量总和，注意DISCONNECT数据帧会比较少，原因是一些session异常关闭，或者关闭的时候没有发送DISCONNECT数据帧
+
+- STOMP Broker Relay (消息转发器)
+	- TCP Connections tcp连接数，数量 = ws客户端数量 + 1，多出的一条是shared system 连接，这个不是太懂，不知道是不是发送到外部MQ的tcp连接。
+	- STOMP Frames 作为客户端接收或者转发的CONNECT，CONNECTED，DISCONNECTED数据帧
+- Client Inbound Channel
+	可以看作是处理接收消息的线程数，如果任务在这里queueing的话，表示应用处理消息比较慢了，此时如果应用是io密集型的就可以考虑增加线程数
+
+- Client Outbound Channel
+	可以看作是发送消息的线程数，如果任务在这里queueing的话，表示客户端处理消息比较慢，同样的如果应用是io密集型，考虑增加线程数
+
+- SockJS Task Scheduler
+	用来发送心跳的线程数，注意如果心跳频率是在stomp层面协商出来的话，sockjs的心跳就会被禁用
+
+
+##测试注解控制器方法
+官方写了一堆废话，总结来说，就是自己看例子，[测试例子](https://github.com/rstoyanchev/spring-websocket-portfolio/tree/master/src/test/java/org/springframework/samples/portfolio/web)
