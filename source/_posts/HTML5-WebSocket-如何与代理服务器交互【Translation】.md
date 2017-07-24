@@ -102,7 +102,7 @@ Kaazing websocket gateway 旨在让所有的浏览器都支持websocket，即使
 ## 负载均衡路由和防火墙
 
 ### L4 负载均衡
-L4 负载均衡可以和websocket很好的写作，没问题，老铁。
+L4 负载均衡可以和websocket很好的协作，没问题，老铁。
 
 ### L7 负载均衡
 由于是在L7层面的路由，对http流量路由，会把websocket流量和正常的http流量弄混淆，所以如果需要使用websocket的话就要特别配置L7负载均衡。
