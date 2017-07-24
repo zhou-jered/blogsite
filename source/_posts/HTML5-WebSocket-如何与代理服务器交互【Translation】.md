@@ -71,6 +71,46 @@ Host: example.com
 当然也不是所有的服务器代理都不会转发关于握手的http头部信息，在握手阶段可以完成，但是问题会出在第一个websocket数据帧发送的时候，因为websocket的数据不跟平常的http数据一样，服务地代理此时可能会抛出一个异常信息。除非服务器代理明确的被配置用来作为websocket的服务器代理。
 
 ## Hop-By-Hop Upgrade
+在WebSocket握手过程中，*Connection* 和 *Upgrade*头部信息会发送给服务器，如果服务器代理参与了wensocket协议升级机制的，由于使用了hop-by-hop传输没，需要一些额外的配置。Upgrade头部只会存在与客户端与代理的连接上，服务器代理必须将hop-by-hop头部信息也发送到实际的服务器去。
+
+现在，能够很好的支持websocket的服务器代理还不是很多（译者注，到2017年已经很多了），所以不能够很好的使用websocket协议，在未来，服务器代理会更好的支持websocket协议。
+
+## 加密的websocket 连接
+现在，让我们来看看在两个代理服务器（显式的和透明的代理）之间的加密WebSocket流量。
+
+### 加密的websocket连接和显式的服务器代理
+同样的，浏览器如果被配置到一个服务器代理去的话，在建立websocket连接的时候，会首先发送一个CONNECT 方法到服务器代理哪里去，比如为了连接到scheme为 wss:// 的主机
+```html
+CONNECT example.com:443 HTTP/1.1
+Host: example
+```
+如果代理服务器允许CONNECT方法的话，TLS握手就会发送，接下来就是websocket连接升级握手过程，连接建立完成之后就可以发送websocket信息了，除了加密之外其他部分都和HTTP是一样的。
+
+### 加密的websocket连接和透明的服务器代理
+在这样的透明代理服务器的情况下，客户端是不知道代理的存在的，所以不会事先发送CONNECT方法，然而，由于线路流量被加密了，中间传输代理服务器可以简单的允许加密的流量通过，所以在使用websocket 加密的时候建立websocket连接是个好机会，除非你敢肯定没有中间者的存在。但是，在带来安全好处的同时，TLS加密操作同时也会增加客户端和服务器的CPU工作量，尽管这不会很多，尤其在使用了硬件层面的SSL/TLS加速的时候，加密带来的工作量几乎可以不计。
+
+让我们来总结以下，下图展示来在浏览器和服务器之间设置websocket连接的决策图，图中展示来在WebSocket（ws://） 和 加密的WebSocket（wss://）的情况下和显式或者透明的代理服务器的搭配情况。
+~[yyy](https://cdn.infoq.com/statics_s2_20170718-0237/resource/articles/Web-Sockets-Proxy-Servers/en/resources/websockets2.png)
+
+上图展示了使用不加密的websocket会更加难以建立websocket连接，但是网络拓扑结果会简单一点。使用ws:// 还是 wss:// 是有前端来做决定的。
+
+## Kaazing  WebSocket Gateway  和 代理服务器
+
+Kaazing websocket gateway 旨在让所有的浏览器都支持websocket，即使浏览器本身不支持，通过模拟websocket的api来实现，这种模拟在纯js环境实现，不需要插件。（下面就是Kaazing 介绍时间，感觉现在都用SockJS了）。
 
 
+## 负载均衡路由和防火墙
+
+### L4 负载均衡
+L4 负载均衡可以和websocket很好的写作，没问题，老铁。
+
+### L7 负载均衡
+由于是在L7层面的路由，对http流量路由，会把websocket流量和正常的http流量弄混淆，所以如果需要使用websocket的话就要特别配置L7负载均衡。
+
+### 关于防火墙
+由于防火墙只是简单的拒绝流入流量或者流出流量，所以并没有特别的关于防火墙的内容。
+
+
+译后言：
+额。。感觉翻译了一篇水文，作者也是在滑水，从Spring的文档跳转到这篇文档的，所以就先入为主的认为是干货，翻译到一般才发现是水文，还有私货和过期的内容。哈哈，还是坚持翻译了个差不多。
 
