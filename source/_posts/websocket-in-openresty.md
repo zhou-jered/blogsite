@@ -25,6 +25,8 @@ Connection 和Upgrade 字段用来告诉服务器协议需要升级，在[RFC645
 >        nonce consisting of a randomly selected 16-byte value that has
 >        been base64-encoded (see Section 4 of [RFC4648]).  The nonce
 >        MUST be selected randomly for each connection.
+
+
 sec-websocket-key 是一段base64编码的随机16字节的字符串
 通过查阅rfc文档
 sec-websocket-version 只能是13
