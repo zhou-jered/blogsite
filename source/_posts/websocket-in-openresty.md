@@ -30,7 +30,8 @@ Connection 和Upgrade 字段用来告诉服务器协议需要升级，在[RFC645
 sec-websocket-key 是一段base64编码的随机16字节的字符串
 通过查阅rfc文档
 sec-websocket-version 只能是13
-sec-websocket-protocol 不是必须的，用于websocket只是定义了一种数据传输方式，并没有定义具体数据传输格式或者协议，所以这个字段可以用来告诉服务器使用的数据传输子协议（subprotocol）。
+sec-websocket-protocol 不是必须的，由于websocket只是定义了一种数据传输方式，并没有定义具体数据传输格式或者协议，所以这个字段可以用来告诉服务器使用的数据传输子协议（subprotocol）。在实际应用中，客户端可以告诉服务器客户端可以使用的subprotocol，如果服务器支持的话，就返回相同的头部字段带上选择的协议。
+
 
 当服务器返回以下信息的时候，websocket连接就建立完成了，接下来就可以在条连接上使用websocket发送数据了
 ```html
