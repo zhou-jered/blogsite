@@ -3,8 +3,8 @@ title: InnoDb 锁和事务（二）
 date: 2017-08-07 16:46:41
 tags:
 	- Note
-	- InnoDb
-	- Mysql
+	- MySQL
+	- InnoDB
 ---
 
 ### 事务隔离级别
@@ -18,7 +18,7 @@ InnoDb默认的隔离级别是 REPEATABLE_READ。
 
 用户可以改变单个session的事务隔离级别，也可以设置服务器的默认隔离级别。[see Section 13.3.6, “SET TRANSACTION Syntax”.](https://dev.mysql.com/doc/refman/5.7/en/set-transaction.html)
 
-InnoDb使用不同的锁策略来实现不同的事务隔离级别，在数据一致性要求比较高的情况下，可以使用默认的`REPEATABLE READ`隔离级别，要求比较宽松的话就可以使用`READ_COMMITED` 甚至 `READ_UNCOMMITED`。`SERIALIZABLE` 采取比`REPEATABLE READ`更加严格的规则，在一些特殊的情况下会采取这个规则，比如 *XA transactions*或者用来定位并发的事务问题或者死锁。
+InnoDb使用不同的锁策略来实现不同的事务隔离级别，在数据一致性要求比较高的情况下，可以使用默认的`REPEATABLE READ`隔离级别，要求比较宽松的话就可以使用`READ_COMMITED` 甚至 `READ_UNCOMMITED`。`SERIALIZABLE` 采取比`REPEATABLE READ`更加严格的规则，在一些特殊的情况下会采取这个规则，比如 *XA transactions*，或者用来定位并发的事务问题或者死锁。
 
 ## REPEATABLE READ
 这是InnoDb的默认事务隔离级别，保证在事务期间能读取到一致的数据快照。通过多版本来实现，应该是在事务开始之后就只读取同一个版本的数据了。
@@ -35,7 +35,7 @@ InnoDb使用不同的锁策略来实现不同的事务隔离级别，在数据�
 - 对于*UPDATE*和*DELETE*语句来说，InnoDb仅持有它正在更新或者删除的行的锁，在MySQL计算完成where条件后，不匹配的行对应的记录锁会被释放。这可以降低死锁的发生几率，但是并不能完全防止死锁的发生。
 - 对于*UPDATE*语句，如果一行已经被锁了，InnoDb就会执行**semi-consistent** 读操作，返回最近的提交的数据，MySQL据此来判断这行数据是否满足update的where条件，如果满足，就必须更新这行，MySQL会再次读取这行，而且这次会lock或者等待lock这行数据。
 
-考虑一下的数据
+考虑以下的数据
 ```sql
 CREATE TABLE T (A INT NOT NULL, B INT) ENGINE=InnoDB;
 INSERT INTO T VALUES (1,2),(2,3),(3,2),(4,3),(5,2);

@@ -3,8 +3,8 @@ title: InnoDb 锁 和 事务（一）
 date: 2017-08-07 13:59:30
 tags:
 	- Note
-	- MySql
-	- InnoDb
+	- MySQL
+	- InnoDB
 ---
 
 ## Innodb 锁的种类
