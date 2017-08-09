@@ -1,5 +1,5 @@
 ---
-title: InnoDb 锁 和 事务（一）
+title: InnoDb 锁和事务（一）
 date: 2017-08-07 13:59:30
 tags:
 	- Note
