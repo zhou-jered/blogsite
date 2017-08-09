@@ -51,4 +51,30 @@ tags:
 注意：
 > 语句SELECT ... FOR UPDATE的锁，只有在禁用autocommit的时候才能生效，也就是说，在显式的开始事务START TRANSACTION 或者 设置autocommit=0的时候，行锁才能生效。在autocommit=1的时候锁是不会生效的。
 
+#### 锁定读例子
+假设你想在child表中插入一条新数据，而且保证在parent表中有一条对应的parent记录，您的应用程序可以确保整个操作顺序的引用完整性。
+
+首先，使用一个一致性读来查询在parent表中是否有相应的记录存在，你能安全的往child表中插入一条记录吗？不能，因为其他session会在你的select语句和insert语句的执行间隙删除你的parent记录，这个过程你并不知道。
+
+为了避免这个问题，使用SELECT ... LOCK IN SHARE MODE操作。
+···SQL
+SELECT * FROM PARENT WHERE NAME ="JONES" LOCK IN SHARED MODE
+```
+在lock in share mode成功返回之后，你就可以安全的在child表中插入数据了，别了提交操作。在这过程中，其他想要在parent 表中对应记录上获取X Lock的session都必须等到你的事务结束，换言之，就是等到表中所有数据处于一致性状态。
+
+考虑另外一个例子，假设在表CHILD_CODES中有一个counter字段，用来给child表中的每一条child记录添加一个唯一标识，不要使用一致性读或者共享读模式来读取这个counter的值，因为两个用户能后看到同一个counter值，如果接下来两个用户都试图使用同一个标识往child表中插入数据时就会发生duplicate-key错误。
+
+在这里，LOCK IN SHARE MODE 并不是一个好的解决方案，因为吐过两个用户在同一时间读取counter，至少有一个在试图更新counter的时候会陷入死锁。
+
+为了实现读取并自增的counter计数器，首先时候FOR UPDATE锁定读操作，然后在执行自增操作，比如
+```SQL
+SELECT COUNTER_FIELD FROM CHILD_CODES FOR UPDATE;
+UPDATE CHILD_CODES SET COUNTER_FIELD = COUNTER_FIELD+1;
+```
+上面的描述仅仅是一个SELECT ... FOR UPDATE 的一个例子，在MySQL中，实际上生成一个唯一标识能够使用一句语句就能完成
+```SQL
+UPDATE CHILD_CODES SET COUNTER_FIELD = LAST_INSERT_ID(COUNTER_FIELD+1);
+SELECT LAST_INSERT_ID();
+```
+SELECT 语句仅仅是取出来标识信息，而且没有访问任何表。
 
