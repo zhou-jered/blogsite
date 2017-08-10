@@ -25,3 +25,5 @@ SELECT * FROM CHILD WHERE ID >100 FOR UPDATE
 
 间隙锁是可以通过设置被禁用的，但是这样会带来幻读的问题。
 
+注意事项
+> 如果你想要通过SELECT FOR UPDATE 来实现唯一性检查的话，在有条件竞争的情况下会发生死锁。避免的方法是插入的时候在唯一列上使用INSERT IGNORE，然后来检查影响的行数量。
