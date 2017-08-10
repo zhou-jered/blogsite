@@ -37,6 +37,12 @@ tags:
 + INSERT INTO T SELECT ... FROM S WHERE ... 在T表中将会被插入的行上设置排它记录锁（没有间隙锁）。如果事务隔离级别是READ COMMITEED，或者配置项`innodb_locks_unsafe_for_binlog`启用而且事务隔离界别是SERIALIZABLE，InnoDB在S中的搜索就是一致性读操作（无锁）。其他情况下，InnoDB会在S上相应的行上设置共享后键锁。
 
 + AUTO_INCREMENT
+在访问自增列的时候，InnoDB会设置一种叫做自增锁的锁，这种锁只会持有到访问自增列的语句结束，而不会持有到整个事务的结束。
+InnoDB在获取自增列前一个值的时候不会设置任何的锁。
 
 + FOREIGN
+如果一个表中存在外键的话，任何插入，更新，删除操作都出触发限制条件检查，在做这个检查的时候，会在爱外键关联的表上设置共享记录锁。即使限制条件检查失败也会设置锁。
+
 + LOCK TABLES
+设置表锁，但是这是在比InnoDB层面更高的MySQL层次设置的锁，如果配置项innodb_table_locks=1而且autocommit=0，InnoDB就能感知到表被锁住了。而且InnoDB上面的MySQL层也直到行级别的锁。
+在其他方面，InnoDB的死锁自动检测在表锁存在的情况下是不能检测到死锁的，这是因为在这种情况下，高层次的MySQL不知道行锁的情况，在其他session拥有一个表的一些行锁的时候，另外的session还是能够获取到表锁的。然而这种情况不会影响事务的正确性，在[这里](https://dev.mysql.com/doc/refman/5.7/en/innodb-deadlock-detection.html)查看更多的信息。
