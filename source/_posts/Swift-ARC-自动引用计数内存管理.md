@@ -112,3 +112,29 @@ class HTMLElement {
 这个类定义类一个html的节点元素。输出元素的html字符串。
 闭包和实例此时形成了强循环引用
 ![cycle references](https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Art/closureReferenceCycle01_2x.png)
+
+### 解决闭包循环引用
+可以在闭包中定义 捕获列表 来解决这个问题，通过闭包中定义捕获列表中变量的类型weak 或者unowned来解决循环引用问题，具体是weak还是unowned参考上面的部分，类似两个类之间的循环引用。
+####定义闭包捕获列表
+在闭包的实现中，参数列表前面，通过方括号括起来的，逗号分割的捕获列表
+Example：
+```Swift
+lazy var someClosure:(Int, String)->String = {
+	[unowned self, weak delegate = self.delegate!] (index:Int, stringToProcess:String)->String in
+		// closure body here
+}
+```
+如果闭包没有参数列表的话就直接写捕获列表就可以了。
+```Swift
+lazy var someClosure : ()->String = {
+	[unowned self, weak delegate = self.delegate!]  in 
+	//closure body here
+}
+```
+
+## Weak 和 Unowned 引用
+将捕获列表中的引用定义为unowned，实例和闭包会一起被dealloc
+如果定义为weak的引用，会在被引用实例被dealloc的时候得到nil，这允许你在闭包里面检查实例是否nil。
+> 如果捕获变量永远不为nil，那么就应该定义为unowned
+
+
