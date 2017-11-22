@@ -57,7 +57,7 @@ reference3 = nil
 
 一般情况下，我们使用的unowned 引用叫做 *safe unowned reference*，就是如果强行访问一个dealloc的引用的话，会触发Runtime error。也可以使用一种叫做*unsafe unowned reference*的unowned引用，此时强行访问被dealloc的内存区域不会触发Runtime error，通过unoened(unsafe) 关键字来声明一个unsafe unowned 引用。
 
-### Unowned 引用和隐式optional 拆包
+## Unowned 引用和隐式optional 拆包
 weak 和 unowned 引用可以解决大部分的循环引用问题，但是还有一种情况下需要 unowned 和 隐式拆包optional特性来配合才能解决循环引用的问题。
 
 下面的例子定义了两个类，Country和City，没有都有一个彼此的强引用属性，在这个数据模型里面，每个country必须有个首都，而且每个city必须属于一个country。
@@ -81,5 +81,34 @@ class City {
 }
 ```
 
+注意在Country的构造器中，由于capitalCity是optional的，允许nil值，所以在name赋值完成之后就认为是初始化完成了，然后就可以使用self关键字了。
+这种情况下，主要考虑就是循环引用的两边都需要一个必须有值的引用，必须先设置一个的引用，再设置另外一个引用，也就有了隐式optional拆包的存在（to be improved）。
 
+## 闭包之间的强循环引用
+当一个实例变量是闭包的时候，而且这个闭包里面捕获了这个实例引用，这时候就会造成一个闭包与实例之间的循环引用。这时候就会造成一个闭包与实例之间的循环引用。
+Swift提供的解决这种循环引用的方法叫做*闭包捕获列表*(closure capture list)，先看一个实例与闭包之间的循环引用例子。
+```Swift
+class HTMLElement {
+	let name: String
+	let text: String ?
+	lazy var asHTML: ()-> String = {
+		if let text = self.text  {
+			return "<\(self.name)>\(text)</\(self.name)"
+		} else {
+			return "<\(self.name) />"
+		}
+	}
 
+	init (name:String, text:String? = nil) {
+		self.name = name
+		self.text = text
+	}
+
+	deinit {
+		print("\(name) is being deinitialized")
+	}
+}
+```
+这个类定义类一个html的节点元素。输出元素的html字符串。
+闭包和实例此时形成了强循环引用
+![cycle references](https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Art/closureReferenceCycle01_2x.png)
