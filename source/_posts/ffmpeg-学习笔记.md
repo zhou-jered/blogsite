@@ -17,6 +17,7 @@ ffmpeg 可以从任意数量的文件中读取数据（这些文件可以是普�
 
 ## 细节
 ffmpeg的转码工作流程如下所示：
+```
  _______              ______________
 |       |            |              |
 | input |  demuxer   | encoded data |   decoder
@@ -33,7 +34,7 @@ ffmpeg的转码工作流程如下所示：
 | output | <-------- | encoded data | <----+
 | file   |   muxer   | packets      |   encoder
 |________|           |______________|
-
+```
 先解码，再重新编码。
 
 ### filtering  转换
@@ -41,6 +42,7 @@ ffmpeg的转码工作流程如下所示：
 
 #### 简单 filter graph
 只有一个输入和输出的filter graph叫做简单filter graph
+```
  _________                        ______________
 |         |                      |              |
 | decoded |                      | encoded data |
@@ -51,14 +53,19 @@ ffmpeg的转码工作流程如下所示：
   filtergraph   | filtered |/
                 | frames   |
                 |__________|
+
+```
 简单fg通过参数 -vf 或者 -af 来配置，分别配置video或者audio
+```
  _______        _____________        _______        ________
 |       |      |             |      |       |      |        |
 | input | ---> | deinterlace | ---> | scale | ---> | output |
 |_______|      |_____________|      |_______|      |________|
+```
 
 #### 复杂 filter graph
 不能被简单的链式线性处理的单一流叫做复杂filter graph，比如下图有多个的输入和输出，而且类型还不一样
+```
  _________
 |         |
 | input 0 |\                    __________
@@ -75,17 +82,20 @@ ffmpeg的转码工作流程如下所示：
 |         | /
 | input 2 |/
 |_________|
+```
 
 复杂fg通过 -filter_complex 参数来指定，注意这个参数是全局参数，这是由于复杂fg不单一指定输入输入流或文件来决定的。
 参数 -lavfi 等同于参数 -filter_complex
 
 ### 复制流
 复制流是参数 -codec的一个选项，令ffmpeg省略掉解码和编码的步骤，所以这ffmpeg会快很多，在改变container 格式和container-level metadata的时候会很有用，这是ffmpeg的工作流程就变成来下图所示
+```
  _______              ______________            ________
 |       |            |              |          |        |
 | input |  demuxer   | encoded data |  muxer   | output |
 | file  | ---------> | packets      | -------> | file   |
 |_______|            |______________|          |________|
+```
 
  这种模式会由于多种原因不可用，显然，这种模式下是不能使用任何filter的。filter的工作在解码之后的数据上。
 
