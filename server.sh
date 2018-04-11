@@ -9,7 +9,7 @@ fi
 case $1 in  
 
 "start")
-	hexo server -p 8124  &
+	hexo server -p 18899  &
 	;;
 
 esac

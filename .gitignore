@@ -4,6 +4,8 @@ nohup.out
 db.json
 public
 *.log
+package-lock.json
 node_modules/
 .deploy*/
 cp.sh
+server.sh
