@@ -56,3 +56,39 @@ AspectJ中切点可以有名字。通过切点去定义需要连接点（join po
 - 成员变量的访问
 
 具体信息在文章的后面会提到。
+
+# Advice
+连接点和切片定义的行为成为advice。理解起来就是在特定的执行点执行的代码合称为advice，可以简单理解为切片代码。Eg.
+```Aspect
+{
+	if (s.disabled) throw new DisabledException();
+}
+```
+会在Server的实例对象的public方法调用的时候执行，更具体一点，在调用之前。
+
+下面这段代码会在public方法跑出FaultException的时候执行。
+```Aspect
+{
+	s.disabled = true;
+	reportFault();
+}
+```
+实际上，上面介绍两种类型的advice，before和after类型，还有一种around类型会在后面介绍
+
+# Advice
+连接点和切片定义的行为成为advice。理解起来就是在特定的执行点执行的代码合称为advice，可以简单理解为切片代码。Eg.
+```Aspect
+{
+	if (s.disabled) throw new DisabledException();
+}
+```
+会在Server的实例对象的public方法调用的时候执行，更具体一点，在调用之前。
+
+下面这段代码会在public方法跑出FaultException的时候执行。
+```Aspect
+{
+	s.disabled = true;
+	reportFault();
+}
+```
+实际上，上面介绍两种类型的advice，before和after类型，还有一种around类型会在后面介绍。
