@@ -1,5 +1,5 @@
 ---
-title: AspectJ-Language-2-连接点和切点
+title: AspectJ-Language 2 连接点和切点
 date: 2018-04-12 13:08:58
 tags:
 	- AspectJ

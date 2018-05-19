@@ -1,5 +1,5 @@
 ---
-title: AspectJ Language-1-概览
+title: AspectJ Language 1 概览
 date: 2018-04-11 20:55:16
 tags:
 	- AOP

@@ -1,5 +1,5 @@
 ---
-title: AspectJ-Language-3-Advice
+title: AspectJ Language 3 Advice
 date: 2018-04-13 18:06:58
 tags:
 	- AspectJ
@@ -11,7 +11,7 @@ tags:
 Advice定义在程序执行过程中的特点的时间点运行的片段。这些点能够通过匿名或者具名的切点来指定。
 Eg：
 ```java
-pointcut setter(Point p1, int newval): target(p1) ** args(newval) 
+pointcut setter(Point p1, int newval): target(p1) && args(newval) 
 				(call(void setX(int)) ||
 				 call(void setY(int)));
 before(Point p1, int newval): setter(p1, newval) {
