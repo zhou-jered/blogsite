@@ -1,5 +1,5 @@
 ---
-title: Spring Cloud Stream Note
+title: Spring Cloud Stream Note (1)
 date: 2018-05-19 10:49:16
 tags:
 	- Spring
@@ -108,5 +108,20 @@ public class VoteHandler {
 - 一次只能处理一条消息（Reactive API不支持）
 `condition`可以通过在注解中的condition属性来执行，支持spEL语法，每条消息会判断一次。所有满足条件的方法都会在同一线程里面被调用。
 
+下面这个例子演示怎么根据消息header不同的type值，分配到不同的方法中去处理
+```java
+@EnableBinding(Sink.class)
+@EnableAutoConfiguration
+public class TestPojoWithAnnoatatedArgements {
+	
+	@StreamListener(target = Sink.INPUT, condition = "headers['type' == 'foo']")
+	public void receiveFoo(@Payload FooPojo fooPojo) {
+		//handler msg 
+	}
 
-
+	@StreamListener(target = Sink.INPUT, condition = "headers ['type'] === 'bar'")
+	public void receiveBar(@Payload BarPojo barPojo) {
+		//handle msg
+	}
+}
+```

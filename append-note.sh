@@ -1,6 +1,7 @@
 if [ $# -lt 1 ]
 then
 	echo "no tips, exit"
+	exit
 fi
 
 FILES=source/_posts/Programer-Tips.md
