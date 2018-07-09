@@ -1,5 +1,3 @@
-
-
 if [ $# -lt 1 ]
 then
 echo "please enter command: start stop"

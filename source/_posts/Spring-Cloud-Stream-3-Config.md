@@ -1,5 +1,5 @@
 ---
-title: Spring Cloud Stream 3 Config
+title: Spring Cloud Stream 3 - Config
 date: 2018-05-21 14:06:47
 tags:
 	- Note

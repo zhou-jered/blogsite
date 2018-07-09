@@ -1,5 +1,5 @@
 ---
-title: Spring Cloud Stream (2) - Binder
+title: Spring Cloud Stream 2 - Binder
 date: 2018-05-21 11:01:29
 tags:
 	- Note

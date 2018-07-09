@@ -1,5 +1,5 @@
 ---
-title: Spring Cloud Stream (4)
+title: Spring Cloud Stream 4 - Content-Type
 date: 2018-05-22 10:40:11
 tags:
 	- Spring

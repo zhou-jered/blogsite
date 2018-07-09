@@ -6,6 +6,7 @@ tags:
 	- Shell
 ---
 
+# curl 文档手册
 curl一般用来模拟Http请求，但是除此之外，curl能做的还有很多，能模拟很多其他和服务器的交互协议数据传输。
 比如DICT, FILE, FTP, FTPS, GOPHER, HTTP, HTTPS, IMAP, IMAPS, LDAP, LDAPS, POP3, POP3S, RTMP, RTSP, SCP, SFTP, SMB, SMBS, SMTP, TELNET, TFTP。
 curl的目的的是提供一个无需用户交互的工具。指定url的时候，可以通过模式匹配来同时指定多个url，比如
@@ -23,7 +24,4 @@ ftp://ftp.example.com/file[1-100].txt
 - -K --config <file> 指定curl参数的配置文件，参数和值要写在同一行内，可以用空格，冒号，或者等号来分隔。
 
 
-数字签名
-流加密
-块加密
-公钥加密
+

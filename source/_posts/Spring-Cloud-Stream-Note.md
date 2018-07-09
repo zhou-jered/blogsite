@@ -1,5 +1,5 @@
 ---
-title: Spring Cloud Stream Note (1)
+title: Spring Cloud Stream Note 1 - Intro
 date: 2018-05-19 10:49:16
 tags:
 	- Spring

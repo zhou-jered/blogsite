@@ -13,3 +13,17 @@ MAC 和 HMAC 是一种带密钥的hash算法，可以用来验证消息的完整
 SSLv3.0 中fragment 最大不能超过2^14, 2KB
 - 
 
+- 
+PPTP 协议连接1723端口
+- 
+Redis cluster 不支持多数据库，select 命令不能用
+- 
+Redis cluster 4.0 之后的命令返回的主机部分格式为
+ > ip:port@number 
+
+ 会导致redisson解析主机错误。redisoon解析主机的格式为 ip:port 。
+- 
+Redis cluster 4.0 之后的`cluster nodes`命令返回的主机部分格式为
+ > ip:port@number 
+
+ 会导致redisson解析主机错误。redisoon解析主机的格式为 ip:port 。
