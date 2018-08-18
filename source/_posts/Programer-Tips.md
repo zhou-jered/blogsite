@@ -11,7 +11,7 @@ curl -F key=value -F filename=@file.tar.gz http://localhost/upload 如果使用�
 MAC 和 HMAC 是一种带密钥的hash算法，可以用来验证消息的完整性和真实性。
 - 
 SSLv3.0 中fragment 最大不能超过2^14, 2KB
-- 
+ 
 
 - 
 PPTP 协议连接1723端口
