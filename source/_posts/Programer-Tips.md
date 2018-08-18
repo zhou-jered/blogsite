@@ -27,3 +27,5 @@ Redis cluster 4.0 之后的`cluster nodes`命令返回的主机部分格式为
  > ip:port@number 
 
  会导致redisson解析主机错误。redisoon解析主机的格式为 ip:port 。
+- 
+Java Nio 中的Buffer 不是线程安全的
