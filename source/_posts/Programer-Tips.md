@@ -33,3 +33,5 @@ Java Nio 中的Buffer 不是线程安全的
 Mybatis Generator 分页插件：<plugin type=org.mybatis.generator.plugins.RowBoundsPlugin></plugin>
 - 
 nginx 不会转发下划线 _ 开头的haeder
+- 
+AspectJ does not have this self-invocation issue because it is not a proxy-based AOP framework.
