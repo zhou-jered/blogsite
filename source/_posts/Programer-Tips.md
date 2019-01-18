@@ -35,3 +35,5 @@ Mybatis Generator 分页插件：<plugin type=org.mybatis.generator.plugins.RowB
 nginx 不会转发下划线 _ 开头的haeder
 - 
 AspectJ does not have this self-invocation issue because it is not a proxy-based AOP framework.
+- 
+通过判断类名中是否有50650来判断这个类是不是由CgLib Proxy的类
